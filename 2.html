@@ -1,16 +1,37 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Изображение</title>
+    <!-- Ваша секция head с метаданными, стилями и другими скриптами -->
 </head>
 <body>
+    <!-- Ваше содержимое страницы -->
+
+    <!-- Ваш форм и другие элементы страницы -->
+    
     <script>
         const urlParams = new URLSearchParams(window.location.search);
         const imageUrl = urlParams.get('image_url');
         if (imageUrl) {
-            window.location.href = imageUrl;
+            const text = urlParams.get('text') || "Текст";
+            const x = urlParams.get('x') || "50";
+            const y = urlParams.get('y') || "50";
+            const fontColor = urlParams.get('font_color') || "#000000";
+            const fontSize = urlParams.get('font_size') || "20";
+            const fontName = urlParams.get('font_name') || "Arial Narrow";
+
+            const canvas = document.createElement('canvas');
+            const ctx = canvas.getContext('2d');
+            const image = new Image();
+            image.onload = function() {
+                canvas.width = image.width;
+                canvas.height = image.height;
+                ctx.drawImage(image, 0, 0);
+                ctx.font = `${fontSize}px ${fontName}`;
+                ctx.fillStyle = fontColor;
+                ctx.fillText(text, parseInt(x), parseInt(y));
+                document.body.appendChild(canvas);
+            }
+            image.src = imageUrl;
         } else {
             console.error('Parameter "image_url" is missing.');
         }
