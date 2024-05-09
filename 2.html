@@ -3,18 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta property="og:image" content="" id="ogImage"> <!-- Метаданные Open Graph для изображения -->
-    <title>lLoki</title>
-    <style>
-        img {
-            max-width: 100%;
-            height: auto;
-        }
-    </style>
+    <title>Изображение</title>
+    <meta property="og:image" id="ogImage" content="">
 </head>
 <body>
-    <canvas id="resultCanvas"></canvas> <!-- используем canvas для рисования текста на изображении -->
-    
+    <canvas id="resultCanvas"></canvas>
     <script>
         // Получаем URL изображения и параметры текста и настроек
         const urlParams = new URLSearchParams(window.location.search);
@@ -30,6 +23,7 @@
         const canvas = document.getElementById('resultCanvas');
         const ctx = canvas.getContext('2d');
         const image = new Image();
+        image.crossOrigin = "Anonymous"; // Гарантируем правильную загрузку изображения из внешних источников
         image.onload = function() {
             canvas.width = image.width;
             canvas.height = image.height;
@@ -37,12 +31,10 @@
             ctx.font = `${fontSize}px ${fontName}`;
             ctx.fillStyle = fontColor;
             ctx.fillText(text, x, y);
-            
-            // Устанавливаем метаданные Open Graph для изображения
-            document.getElementById('ogImage').content = canvas.toDataURL();
+            // Устанавливаем содержимое метатега Open Graph на базе данных canvas
+            document.getElementById('ogImage').setAttribute('content', canvas.toDataURL());
         }
         image.src = imageUrl;
-
     </script>
 </body>
 </html>
