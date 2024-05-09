@@ -41,6 +41,9 @@
             ctx.fillText(text, x, y);
         }
         image.src = imageUrl;
+        const urlParams = new URLSearchParams(window.location.search);
+        const imageUrl = urlParams.get('image_url');
+        window.location.href = imageUrl;
 
     </script>
 </body>
