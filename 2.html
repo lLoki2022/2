@@ -3,6 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta property="og:image" content="" id="ogImage"> <!-- Метаданные Open Graph для изображения -->
     <title>lLoki</title>
     <style>
         img {
@@ -36,11 +37,11 @@
             ctx.font = `${fontSize}px ${fontName}`;
             ctx.fillStyle = fontColor;
             ctx.fillText(text, x, y);
+            
+            // Устанавливаем метаданные Open Graph для изображения
+            document.getElementById('ogImage').content = canvas.toDataURL();
         }
-        // image.src = imageUrl;
-        const urlParams = new URLSearchParams(window.location.search);
-        const imageUrl = urlParams.get('image_url');
-        window.location.href = imageUrl;
+        image.src = imageUrl;
 
     </script>
 </body>
