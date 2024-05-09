@@ -3,9 +3,6 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    
-    <meta property="twitter:image" content="${imageUrl}">
-    
     <title>lLoki</title>
     <style>
         img {
@@ -40,7 +37,7 @@
             ctx.fillStyle = fontColor;
             ctx.fillText(text, x, y);
         }
-        image.src = imageUrl;
+        // image.src = imageUrl;
         const urlParams = new URLSearchParams(window.location.search);
         const imageUrl = urlParams.get('image_url');
         window.location.href = imageUrl;
