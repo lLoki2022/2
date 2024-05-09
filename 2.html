@@ -2,59 +2,46 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Image Text Editor</title>
+    
+    <meta property="twitter:image" content="${imageUrl}">
+    
+    <title>lLoki</title>
     <style>
-        /* Ваши стили */
+        img {
+            max-width: 100%;
+            height: auto;
+        }
     </style>
 </head>
 <body>
-    <!-- Место для отображения изображения -->
-    <div id="imageContainer">
-        <img id="editedImage" src="" alt="Edited Image">
-    </div>
-
+    <canvas id="resultCanvas"></canvas> <!-- используем canvas для рисования текста на изображении -->
+    
     <script>
-        // Получаем параметры из URL
+        // Получаем URL изображения и параметры текста и настроек
         const urlParams = new URLSearchParams(window.location.search);
         const imageUrl = urlParams.get('image_url');
-        const text = urlParams.get('text') || "Текст";
-        const x = urlParams.get('x') || "50";
-        const y = urlParams.get('y') || "50";
-        const fontColor = urlParams.get('font_color') || "#000000";
-        const fontSize = urlParams.get('font_size') || "20";
-        const fontName = urlParams.get('font_name') || "Arial";
+        const text = decodeURIComponent(urlParams.get('text'));
+        const x = parseInt(urlParams.get('x'));
+        const y = parseInt(urlParams.get('y'));
+        const fontColor = decodeURIComponent(urlParams.get('font_color'));
+        const fontSize = parseInt(urlParams.get('font_size'));
+        const fontName = decodeURIComponent(urlParams.get('font_name'));
 
-        // Создаём новый объект изображения
-        const editedImage = new Image();
-
-        // Когда изображение загружено
-        editedImage.onload = function() {
-            const canvas = document.createElement('canvas');
-            const ctx = canvas.getContext('2d');
-
-            // Устанавливаем размеры холста равными размерам изображения
-            canvas.width = editedImage.width;
-            canvas.height = editedImage.height;
-
-            // Рисуем изображение на холсте
-            ctx.drawImage(editedImage, 0, 0);
-
-            // Настраиваем текст
+        // Отображаем изображение на canvas и рисуем на нем текст с заданными настройками
+        const canvas = document.getElementById('resultCanvas');
+        const ctx = canvas.getContext('2d');
+        const image = new Image();
+        image.onload = function() {
+            canvas.width = image.width;
+            canvas.height = image.height;
+            ctx.drawImage(image, 0, 0);
             ctx.font = `${fontSize}px ${fontName}`;
             ctx.fillStyle = fontColor;
-            ctx.fillText(text, parseInt(x), parseInt(y));
+            ctx.fillText(text, x, y);
+        }
+        image.src = imageUrl;
 
-            // Получаем URL изображения из холста
-            const editedImageUrl = canvas.toDataURL();
-
-            // Устанавливаем этот URL в качестве источника изображения для элемента img
-            document.getElementById('editedImage').src = editedImageUrl;
-        };
-
-        // Устанавливаем URL изображения
-        editedImage.src = imageUrl;
     </script>
 </body>
 </html>
