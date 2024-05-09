@@ -1,40 +1,60 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <!-- Ваша секция head с метаданными, стилями и другими скриптами -->
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Image Text Editor</title>
+    <style>
+        /* Ваши стили */
+    </style>
 </head>
 <body>
-    <!-- Ваше содержимое страницы -->
+    <!-- Место для отображения изображения -->
+    <div id="imageContainer">
+        <img id="editedImage" src="" alt="Edited Image">
+    </div>
 
-    <!-- Ваш форм и другие элементы страницы -->
-    
     <script>
+        // Получаем параметры из URL
         const urlParams = new URLSearchParams(window.location.search);
         const imageUrl = urlParams.get('image_url');
-        if (imageUrl) {
-            const text = urlParams.get('text') || "Текст";
-            const x = urlParams.get('x') || "50";
-            const y = urlParams.get('y') || "50";
-            const fontColor = urlParams.get('font_color') || "#000000";
-            const fontSize = urlParams.get('font_size') || "20";
-            const fontName = urlParams.get('font_name') || "Arial Narrow";
+        const text = urlParams.get('text') || "Текст";
+        const x = urlParams.get('x') || "50";
+        const y = urlParams.get('y') || "50";
+        const fontColor = urlParams.get('font_color') || "#000000";
+        const fontSize = urlParams.get('font_size') || "20";
+        const fontName = urlParams.get('font_name') || "Arial";
 
+        // Создаём новый объект изображения
+        const editedImage = new Image();
+
+        // Когда изображение загружено
+        editedImage.onload = function() {
             const canvas = document.createElement('canvas');
             const ctx = canvas.getContext('2d');
-            const image = new Image();
-            image.onload = function() {
-                canvas.width = image.width;
-                canvas.height = image.height;
-                ctx.drawImage(image, 0, 0);
-                ctx.font = `${fontSize}px ${fontName}`;
-                ctx.fillStyle = fontColor;
-                ctx.fillText(text, parseInt(x), parseInt(y));
-                document.body.appendChild(canvas);
-            }
-            image.src = imageUrl;
-        } else {
-            console.error('Parameter "image_url" is missing.');
-        }
+
+            // Устанавливаем размеры холста равными размерам изображения
+            canvas.width = editedImage.width;
+            canvas.height = editedImage.height;
+
+            // Рисуем изображение на холсте
+            ctx.drawImage(editedImage, 0, 0);
+
+            // Настраиваем текст
+            ctx.font = `${fontSize}px ${fontName}`;
+            ctx.fillStyle = fontColor;
+            ctx.fillText(text, parseInt(x), parseInt(y));
+
+            // Получаем URL изображения из холста
+            const editedImageUrl = canvas.toDataURL();
+
+            // Устанавливаем этот URL в качестве источника изображения для элемента img
+            document.getElementById('editedImage').src = editedImageUrl;
+        };
+
+        // Устанавливаем URL изображения
+        editedImage.src = imageUrl;
     </script>
 </body>
 </html>
