@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Изображение</title>
+</head>
+<body>
+    <script>
+        const urlParams = new URLSearchParams(window.location.search);
+        const imageUrl = urlParams.get('image_url');
+        if (imageUrl) {
+            window.location.href = imageUrl;
+        } else {
+            console.error('Parameter "image_url" is missing.');
+        }
+    </script>
+</body>
+</html>
